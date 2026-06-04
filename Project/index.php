@@ -249,8 +249,8 @@
     </header>
 
     <section class="hero">
-        <h1>Giải thưởng Sinh viên Nghiên cứu Khoa học Euréka 2026</h1>
-        <p>Sân chơi học thuật lớn nhất dành cho sinh viên đam mê nghiên cứu khoa học và đổi mới sáng tạo trên toàn quốc.</p>
+        <h1>Khoa Trung tam cong nghe 2026</h1>
+        <p>Sân chơi học thuật lớn nhất dành cho sinh viên đam mê nghiên cứu khoa học và đổi mới sáng tạo.</p>
         <a href="#" class="btn-primary">Đăng ký tham gia ngay</a>
     </section>
 
