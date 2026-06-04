@@ -14,8 +14,9 @@
         }
 
         :root {
-            --primary-color: #0056b3; /* Xanh dương đặc trưng của các tổ chức Đoàn/Hội */
-            --secondary-color: #f39c12; /* Vàng cam tạo điểm nhấn */
+            --primary-color: #0056b3; 
+            --primary-hover: #004494;
+            --secondary-color: #f39c12; 
             --text-dark: #333;
             --text-light: #666;
             --bg-light: #f8f9fa;
@@ -73,11 +74,57 @@
             color: var(--primary-color);
         }
 
+        /* KHU VỰC TÌM KIẾM VÀ ĐĂNG NHẬP */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .search-bar input {
             padding: 8px 15px;
             border: 1px solid #ddd;
             border-radius: 20px;
             outline: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-outline {
+            padding: 8px 16px;
+            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-fill {
+            padding: 8px 16px;
+            border: 1.5px solid var(--primary-color);
+            color: white;
+            background: var(--primary-color);
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-fill:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
         }
 
         /* 2. BANNER NỔI BẬT (HERO SECTION) */
@@ -140,7 +187,6 @@
             border-radius: 2px;
         }
 
-        /* GRID LAYOUT CHO TIN TỨC */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -216,10 +262,10 @@
             margin-bottom: 10px;
         }
 
-        /* RESPONSIVE DESIGN (Điện thoại & Tablet) */
-        @media (max-width: 768px) {
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 900px) {
             .nav-menu {
-                display: none; /* Ẩn menu trên mobile để làm nút Hamburger sau */
+                display: none; 
             }
             .search-bar {
                 display: none;
@@ -232,9 +278,11 @@
 </head>
 <body>
 
+    <!-- PHẦN 1: HEADER -->
     <header>
         <div class="nav-container">
             <a href="#" class="logo">KhoaHocTre<span>.vn</span></a>
+            
             <ul class="nav-menu">
                 <li><a href="#">Trang chủ</a></li>
                 <li><a href="#">Cuộc thi</a></li>
@@ -242,18 +290,28 @@
                 <li><a href="#">Tài liệu</a></li>
                 <li><a href="#">Liên hệ</a></li>
             </ul>
-            <div class="search-bar">
-                <input type="text" placeholder="Tìm kiếm tin tức...">
+
+            <!-- MỚI: Nhóm Tìm kiếm và Nút Đăng nhập/Đăng ký -->
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" placeholder="Tìm kiếm tin tức...">
+                </div>
+                <div class="auth-buttons">
+                    <a href="#" class="btn-outline">Đăng nhập</a>
+                    <a href="#" class="btn-fill">Đăng ký</a>
+                </div>
             </div>
         </div>
     </header>
 
+    <!-- PHẦN 2: BANNER HERO -->
     <section class="hero">
         <h1>Giải thưởng Sinh viên Nghiên cứu Khoa học Euréka 2026</h1>
         <p>Sân chơi học thuật lớn nhất dành cho sinh viên đam mê nghiên cứu khoa học và đổi mới sáng tạo trên toàn quốc.</p>
         <a href="#" class="btn-primary">Đăng ký tham gia ngay</a>
     </section>
 
+    <!-- PHẦN 3: NỘI DUNG CHÍNH -->
     <main class="main-container">
         <h2 class="section-title">Tin Tức & Sự Kiện Mới Nhất</h2>
         
@@ -299,6 +357,7 @@
         </div>
     </main>
 
+    <!-- PHẦN 4: FOOTER -->
     <footer>
         <p><strong>Trung tâm Phát triển Khoa học và Công nghệ Trẻ TP.HCM</strong></p>
         <p>Địa chỉ: Số 1 Phạm Ngọc Thạch, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
