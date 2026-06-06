@@ -297,7 +297,7 @@
                     <input type="text" placeholder="Tìm kiếm tin tức...">
                 </div>
                 <div class="auth-buttons">
-                    <a href="login.html" class="btn-outline">Đăng nhập</a>
+                    <a href="login.php" class="btn-outline">Đăng nhập</a>
                     <a href="#" class="btn-fill">Đăng ký</a>
                 </div>
             </div>
