@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Giả sử tài khoản đúng trong Database là admin@gmail.com / 123456
     if ($email === "admin@gmail.com" && $password === "123456") {
         // Đăng nhập thành công, chuyển hướng về trang chủ
-        header("Location: index.html");
+        header("Location: index.php");
         exit();
     } else {
         // Nếu sai, gán câu thông báo lỗi
