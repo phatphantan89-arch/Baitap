@@ -101,41 +101,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div class="login-container">
-        <a href="index.html" class="logo">KhoaHocTre<span>.vn</span></a>
-        <h2>Đăng nhập hệ thống</h2>
+   <div class="login-container">
+    <a href="index.php" class="logo">KhoaHocTre<span>.vn</span></a>
+    <h2>Đăng nhập hệ thống</h2>
 
-        <?php if(!empty($error_message)): ?>
-            <div class="alert-error">
-                ⚠️ <?php echo $error_message; ?>
-            </div>
-        <?php endif; ?>
-
-        <form action="login.php" method="POST">
-            <div class="form-group">
-                <label for="email">Tài khoản Email</label>
-                <input type="email" id="email" name="email" placeholder="Nhập email của bạn..." 
-                       class="<?php echo !empty($error_message) ? 'input-error' : ''; ?>" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Mật khẩu</label>
-                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu..." 
-                       class="<?php echo !empty($error_message) ? 'input-error' : ''; ?>" required>
-            </div>
-
-            <div class="form-options">
-                <label><input type="checkbox" name="remember"> Ghi nhớ đăng nhập</label>
-                <a href="#">Quên mật khẩu?</a>
-            </div>
-
-            <button type="submit" class="btn-submit">Đăng nhập</button>
-        </form>
-
-        <div class="register-link">
-            Chưa có tài khoản? <a href="#">Đăng ký ngay</a>
+    <?php if(!empty($error_message)): ?>
+        <div class="alert-error">
+            ⚠️ <?php echo $error_message; ?>
         </div>
-    </div>
+    <?php endif; ?>
 
-</body>
-</html>
+    <form action="login.php" method="POST">
+        <div class="form-group">
+            <label for="email">Tài khoản Email</label>
+            <input type="email" id="email" name="email" placeholder="Nhập email của bạn..." 
+                   class="<?php echo !empty($error_message) ? 'input-error' : ''; ?>" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu..." required>
+        </div>
+
+        <div class="form-options">
+            <label><input type="checkbox" name="remember"> Ghi nhớ đăng nhập</label>
+            <a href="#">Quên mật khẩu?</a>
+        </div>
+
+        <button type="submit" name="btn_dangnhap" class="btn-submit">Đăng nhập</button>
+    </form>
+
+    <div class="register-link">
+        Chưa có tài khoản? <a href="register.php" class="btn-fill">Đăng ký</a>
+    </div>
+</div>
