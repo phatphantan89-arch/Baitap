@@ -97,6 +97,13 @@ CREATE TABLE `thongbao` (
   `maTaiKhoan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
+CREATE TABLE IF NOT EXISTS tuyendung (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tieude VARCHAR(255) NOT NULL,
+    hinhanh VARCHAR(255) DEFAULT 'default.png',
+    noidung TEXT NOT NULL,
+    ngaydang DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 --
 -- Chỉ mục cho các bảng đã đổ
 --

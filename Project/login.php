@@ -1,137 +1,75 @@
 <?php
-// Giả lập xử lý logic sau khi người dùng bấm nút "Đăng nhập"
-$error_message = "";
+// 1. XỬ LÝ LOGIC PHP (Đặt trên cùng để xử lý dữ liệu trước khi vẽ giao diện)
+if (file_exists('db.php')) { include 'db.php'; }
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+
+$thong_bao = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $email = trim($_POST['email']);
+    $matkhau_raw = $_POST['matkhau'];
 
-    // Giả sử tài khoản đúng trong Database là admin@gmail.com / 123456
-    if ($email === "admin@gmail.com" && $password === "123456") {
-        // Đăng nhập thành công, chuyển hướng về trang chủ
-        header("Location: index.php");
-        exit();
-    } else {
-        // Nếu sai, gán câu thông báo lỗi
-        $error_message = "Mật khẩu hoặc tài khoản không chính xác. Vui lòng thử lại!";
-    }
+    if (!empty($email) && !empty($matkhau_raw)) {
+        $sql = "SELECT * FROM taikhoan WHERE email = ?";
+        if ($stmt = mysqli_prepare($conn, $sql)) {
+            mysqli_stmt_bind_param($stmt, "s", $email);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            if ($row = mysqli_fetch_assoc($result)) {
+                if ($matkhau_raw == $row['matkhau']) {
+                    // Trong login.php, khi đăng nhập thành công:
+$_SESSION['user_id'] = $row['mataikhoan'];
+$_SESSION['user_name'] = $row['hoten'];
+$_SESSION['vaitro'] = $row['vaitro']; // Dùng 'vaitro' làm tên biến thống nhất
+                    exit();
+                } else { $thong_bao = "Sai mật khẩu!"; }
+            } else { $thong_bao = "Email không tồn tại!"; }
+            mysqli_stmt_close($stmt);
+        }
+    } else { $thong_bao = "Vui lòng nhập đầy đủ!"; }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - Khoa Học Trẻ</title>
+    <title>Đăng nhập - KhoaHocTre.vn</title>
     <style>
-        :root {
-            --primary-color: #0056b3; 
-            --primary-hover: #004494;
-            --secondary-color: #f39c12; 
-            --text-dark: #333;
-            --bg-light: #f4f7f6;
-            --error-color: #dc3545; /* Màu đỏ cho thông báo lỗi */
-            --error-bg: #f8d7da;
-            --error-border: #f5c6cb;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-
-        body {
-            background-color: var(--bg-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-container {
-            background-color: white;
-            width: 100%;
-            max-width: 400px;
-            padding: 40px 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-
-        .logo {
-            text-align: center;
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            text-decoration: none;
-            display: block;
-        }
-
+        /* GIỮ NGUYÊN CSS CŨ CỦA BẠN */
+        :root { --primary-color: #007aff; --secondary-color: #f39c12; }
+        body { background: linear-gradient(135deg, #e4f0ff 0%, #a1c4fd 100%); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: sans-serif; }
+        .register-container { background-color: white; width: 100%; max-width: 420px; padding: 40px 35px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .logo { text-align: center; font-size: 26px; font-weight: bold; color: var(--primary-color); margin-bottom: 25px; display: block; text-decoration: none; }
         .logo span { color: var(--secondary-color); }
-
-        h2 { text-align: center; color: var(--text-dark); margin-bottom: 25px; font-size: 20px; }
-
-        /* THIẾT KẾ KHUNG BÁO LỖI */
-        .alert-error {
-            background-color: var(--error-bg);
-            color: var(--error-color);
-            border: 1px solid var(--error-border);
-            padding: 12px;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 500;
-        }
-
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-dark); font-size: 14px; }
-        .form-group input { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; outline: none; }
-        
-        /* Đổi màu viền input thành đỏ nếu có lỗi */
-        .input-error { border-color: var(--error-color) !important; }
-
-        .form-group input:focus { border-color: var(--primary-color); }
-        .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; font-size: 13px; }
-        .form-options label { display: flex; align-items: center; gap: 5px; color: #666; cursor: pointer; }
-        .form-options a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
-        .btn-submit { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; }
-        .btn-submit:hover { background-color: var(--primary-hover); }
-        .register-link { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
-        .register-link a { color: var(--primary-color); font-weight: bold; text-decoration: none; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; }
+        .btn-submit { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-   <div class="login-container">
+<div class="register-container">
     <a href="index.php" class="logo">KhoaHocTre<span>.vn</span></a>
-    <h2>Đăng nhập hệ thống</h2>
-
-    <?php if(!empty($error_message)): ?>
-        <div class="alert-error">
-            ⚠️ <?php echo $error_message; ?>
-        </div>
+    <h2 style="text-align:center; margin-bottom:20px;">Đăng nhập hệ thống</h2>
+    
+    <?php if($thong_bao): ?>
+        <p style="color:red; text-align:center; margin-bottom:15px;"><?php echo $thong_bao; ?></p>
     <?php endif; ?>
 
-    <form action="login.php" method="POST">
+    <form method="POST" action="">
         <div class="form-group">
-            <label for="email">Tài khoản Email</label>
-            <input type="email" id="email" name="email" placeholder="Nhập email của bạn..." 
-                   class="<?php echo !empty($error_message) ? 'input-error' : ''; ?>" required>
+            <input type="email" name="email" placeholder="Nhập email của bạn..." required>
         </div>
-        
         <div class="form-group">
-            <label for="password">Mật khẩu</label>
-            <input type="password" id="password" name="password" placeholder="Nhập mật khẩu..." required>
+            <input type="password" name="matkhau" placeholder="Nhập mật khẩu..." required>
         </div>
-
-        <div class="form-options">
-            <label><input type="checkbox" name="remember"> Ghi nhớ đăng nhập</label>
-            <a href="#">Quên mật khẩu?</a>
-        </div>
-
-        <button type="submit" name="btn_dangnhap" class="btn-submit">Đăng nhập</button>
+        <button type="submit" class="btn-submit">Đăng nhập</button>
     </form>
-
-    <div class="register-link">
-        Chưa có tài khoản? <a href="register.php" class="btn-fill">Đăng ký</a>
+    
+    <div style="text-align:center; margin-top:20px; font-size:14px;">
+        Chưa có tài khoản? <a href="register.php">Đăng ký ngay</a>
     </div>
 </div>
+
+</body>
+</html>

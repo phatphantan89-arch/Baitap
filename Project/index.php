@@ -1,3 +1,9 @@
+<?php
+// Bật Session ở đầu trang để hệ thống nhận diện trạng thái đăng nhập
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -90,7 +96,27 @@
 
         .auth-buttons {
             display: flex;
+            align-items: center;
             gap: 10px;
+        }
+
+        /* CSS Mới cho lời chào thành viên */
+        .user-welcome {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .btn-logout {
+            color: #dc3545;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 5px;
+            transition: color 0.3s;
+        }
+        .btn-logout:hover {
+            color: #bd2130;
         }
 
         .btn-outline {
@@ -264,11 +290,8 @@
 
         /* RESPONSIVE DESIGN */
         @media (max-width: 900px) {
-            .nav-menu {
+            .nav-menu, .search-bar {
                 display: none; 
-            }
-            .search-bar {
-                display: none;
             }
             .hero h1 {
                 font-size: 28px;
@@ -278,40 +301,52 @@
 </head>
 <body>
 
-    <!-- PHẦN 1: HEADER -->
-    <header>
-        <div class="nav-container">
-            <a href="#" class="logo">KhoaHocTre<span>.vn</span></a>
-            
-            <ul class="nav-menu">
-                <li><a href="#">Trang chủ</a></li>
-                <li><a href="#">Cuộc thi</a></li>
-                <li><a href="#">Nghiên cứu KH</a></li>
-                <li><a href="#">Tài liệu</a></li>
-                <li><a href="#">Liên hệ</a></li>
-            </ul>
+<header>
+    <div class="nav-container">
+        <a href="index.php" class="logo">KhoaHocTre<span>.vn</span></a>
+        
+       <ul class="nav-menu">
+    <li><a href="index.php">Trang chủ</a></li>
+    <li><a href="#">Cuộc thi</a></li>
+    <li><a href="#">Nghiên cứu KH</a></li>
+    <li><a href="#">Tài liệu</a></li>
+    <li><a href="#">Liên hệ</a></li>
+    
+    <li><a href="tuyendung.php">Tuyển dụng</a></li>
 
-            <!-- MỚI: Nhóm Tìm kiếm và Nút Đăng nhập/Đăng ký -->
-            <div class="header-actions">
-                <div class="search-bar">
-                    <input type="text" placeholder="Tìm kiếm tin tức...">
-                </div>
-                <div class="auth-buttons">
+    <?php if (isset($_SESSION['user_id']) && isset($_SESSION['vaitro']) && ($_SESSION['vaitro'] === 'admin' || $_SESSION['vaitro'] === 'bientapvien')): ?>
+        <li>
+            <a href="quanlytuyendung.php" style="color: #d9534f; font-weight: bold;">
+                🛠️ Quản lý tuyển dụng
+            </a>
+        </li>
+    <?php endif; ?>
+</ul>
+
+        <div class="header-actions">
+            <div class="search-bar">
+                <input type="text" placeholder="Tìm kiếm tin tức...">
+            </div>
+            
+            <div class="auth-buttons">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <span class="user-welcome">👋 Xin chào, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
+                    <a href="logout.php" class="btn-logout">Đăng xuất</a>
+                <?php else: ?>
                     <a href="login.php" class="btn-outline">Đăng nhập</a>
-                    <a href="#" class="btn-fill">Đăng ký</a>
-                </div>
+                    <a href="register.php" class="btn-fill">Đăng ký</a>
+                <?php endif; ?>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- PHẦN 2: BANNER HERO -->
     <section class="hero">
-        <h1>Khoa Trung tam cong nghe 2026</h1>
+        <h1>Khoa Trung tâm công nghệ 2026</h1>
         <p>Sân chơi học thuật lớn nhất dành cho sinh viên đam mê nghiên cứu khoa học và đổi mới sáng tạo.</p>
         <a href="#" class="btn-primary">Đăng ký tham gia ngay</a>
     </section>
 
-    <!-- PHẦN 3: NỘI DUNG CHÍNH -->
     <main class="main-container">
         <h2 class="section-title">Tin Tức & Sự Kiện Mới Nhất</h2>
         
@@ -357,7 +392,6 @@
         </div>
     </main>
 
-    <!-- PHẦN 4: FOOTER -->
     <footer>
         <p><strong>Trung tâm Phát triển Khoa học và Công nghệ Trẻ TP.HCM</strong></p>
         <p>Địa chỉ: Số 1 Phạm Ngọc Thạch, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
